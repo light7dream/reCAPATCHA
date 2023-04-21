@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const request = require('request-promise-native')
-const poll = require('promise-poller').deafult()
+const poll = require('promise-poller').default()
 
 const config = {
     sitekey : '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-',
