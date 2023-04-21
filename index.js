@@ -69,10 +69,10 @@ async function dowork(){
             var n = await page.$eval('#root', el=>{
                 return el.children[0].children.length
             })
+            console.log(n)
             
             if(n==3)
             {
-                console.log(n)
                 break;   
             }
 
