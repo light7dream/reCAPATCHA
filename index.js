@@ -11,7 +11,7 @@ const config = {
 
 const emails =[
     'anpch@example.com',
-    'anpch@example.com',
+    'adam.cela21@gmail.com',
     'anpch@example.com',
     'anpch@example.com',
     'anpch@example.com',
@@ -60,7 +60,7 @@ async function dowork(){
                 }
             });
             
-            await page.type('#Email', emails[0]);
+            await page.type('#Email', emails[i%10]);
 
             if(data.enabled)
             {
