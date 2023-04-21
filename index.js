@@ -64,6 +64,10 @@ async function dowork(){
             console.log(`Navigating to ${config.pageurl}`)
             await page.goto(config.pageurl)
             
+            // Delete all cookies for the current page
+            const cookies = await page.cookies();
+            await Promise.all(cookies.map(cookie => page.deleteCookie(cookie)));
+            
             await page.waitForSelector('#Email')
 
             const data = await page.$eval('[data-testid="visible_recaptcha"]', el => {
