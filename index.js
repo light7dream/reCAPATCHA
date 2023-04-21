@@ -51,27 +51,35 @@ async function dowork(){
             
             await page.waitForSelector('#Email')
 
-            const sitekey = await page.$eval('[data-testid="visible_recaptcha"]', element => {
-                return element.getAttribute('data-sitekey');
+            const data = await page.$eval('[data-testid="visible_recaptcha"]', el => {
+                var siteKey =  el.getAttribute('data-sitekey');
+                var enabled = el.childElementCount;
+                return {
+                    siteKey: siteKey,
+                    enabled: enabled
+                }
             });
             
-            // const requestId = await initiateCaptchaRequest(config.apiKey, sitekey)
-            
             await page.type('#Email', emails[0]);
+
+            if(data.enabled)
+            {
+                const requestId = await initiateCaptchaRequest(config.apiKey, data.sitekey)
             
-            // const response = await pollForReqeustResults(config.apiKey, requestId)
-            
-            // console.log(`Entering recaptcha response ${response}`)
-            // await page.evaluate(()=>{
-            //         var o = document.querySelector("[name='g-recaptcha-response']")
-            //         o&&(o.innerHTML=response)
-            // })
+                const response = await pollForReqeustResults(config.apiKey, requestId)
                 
+                console.log(`Entering recaptcha response ${response}`)
+                await page.evaluate(()=>{
+                    var o = document.querySelector("[name='g-recaptcha-response']")
+                    o&&(o.innerHTML=response)
+                })
+            }
+                    
             console.log(`Submitting...`)
             await page.click('button[type="submit"]')
             await page.waitForTimeout(100);
-            const valid = await page.$eval('#Password', el=>{return el!=null?'registed':'not registed'})
-            console.log(i, valid)
+            const valid = await page.$('#Password')
+            console.log(i, valid==null?'no':'yes')
             page.close()
             timeout(100)
         }
