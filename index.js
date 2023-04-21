@@ -99,7 +99,7 @@ async function dowork(){
                     
             console.log(`Submitting...`)
             await page.click('button[type="submit"]')
-            await page.waitForTimeout(10000);
+            await page.waitForTimeout(500);
             const valid = await page.$('#Password')
             console.log(i, valid==null?'no':'yes')
             page.close()
