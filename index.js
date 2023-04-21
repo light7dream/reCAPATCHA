@@ -79,7 +79,7 @@ async function dowork(){
 
             if(data.enabled)
             {
-                const requestId = await initiateCaptchaRequest(config.apiKey, data.sitekey)
+                const requestId = await initiateCaptchaRequest(config.apiKey, data.siteKey)
             
                 const response = await pollForReqeustResults(config.apiKey, requestId)
                 
