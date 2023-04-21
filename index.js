@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const request = require('request-promise-native')
-const poll = require('promise-poller').default()
+const poll = require('promise-poller').default
 
 const config = {
     sitekey : '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-',
@@ -25,7 +25,7 @@ const chromeOptions = {
     defaultViewport: null
 }
 
-(async function main(){
+async function main(){
     const browser = await puppeteer.launch(chromeOptions)
     const page = await browser.newPage()
 
@@ -49,7 +49,7 @@ const chromeOptions = {
 
     // console.log(`Submitting...`)
     // page.click('button[type="submit"]')
-})()
+}
 
 
 async function initiateCaptchaRequest(apiKey){
@@ -92,3 +92,6 @@ function requestCaptchaResults(apiKey, requestId){
 
 
 const timeout = ms => new Promise(res=>setTimeout(res, ms))
+
+
+main()
