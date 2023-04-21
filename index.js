@@ -110,7 +110,7 @@ async function dowork(){
             break;
         }
     }
-    if(idx<emails.length)
+    // if(idx<emails.length)
     setTimeout(dowork, 10000);
 }
 
