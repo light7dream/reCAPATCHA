@@ -12,6 +12,21 @@ const config = {
 const emails =[
     'anpch@example.com',
     'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
+    'adam.cela21@gmail.com',
     'anpch@example.com',
     'anpch@example.com',
     'anpch@example.com',
@@ -77,7 +92,7 @@ async function dowork(){
                     
             console.log(`Submitting...`)
             await page.click('button[type="submit"]')
-            await page.waitForTimeout(100);
+            await page.waitForTimeout(500);
             const valid = await page.$('#Password')
             console.log(i, valid==null?'no':'yes')
             page.close()
