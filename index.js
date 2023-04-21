@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 const request = require('request-promise-native')
-const poll = require('promise-poller').default()
+const poll = require('promise-poller').default
 
 const config = {
     sitekey : '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-',
@@ -44,7 +44,7 @@ const chromeOptions = {
 
     const response = await pollForReqeustResults(config.apiKey, requestId)
 
-    console.log(`Entering recaptcha response ${response}`)
+    // console.log(`Entering recaptcha response ${response}`)
     await page.evaluate(`document.getElementById("g-recaptcha-response").innerHTML="${response}"`)
 
     // console.log(`Submitting...`)
