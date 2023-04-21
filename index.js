@@ -86,10 +86,7 @@ async function dowork(){
                 const response = await pollForReqeustResults(config.apiKey, requestId)
                 
                 console.log(`Entering recaptcha response ${response}`)
-                await page.evaluate(()=>{
-                    var o = document.querySelector("[name='g-recaptcha-response']")
-                    o&&(o.innerHTML=response)
-                })
+                await page.evaluate(`var o = document.querySelector("[name='g-recaptcha-response']");o&&(o.innerHTML=${response})`)
             }
                     
             console.log(`Submitting...`)
@@ -118,6 +115,7 @@ async function dowork(){
     }
     // if(idx<emails.length)
     setTimeout(dowork, 60000);
+    browser.close();
 }
 
 
