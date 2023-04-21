@@ -52,23 +52,26 @@ const chromeOptions = {
     headless: false,
 }
 
+var idx=0;
 
 async function dowork(){
-    const browser = await puppeteer.launch(chromeOptions)
-    
-    for(var i=0;;i++){
-        try{
 
+    const browser = await puppeteer.launch(chromeOptions)
+    for(var i=idx;;i++){
+        try{
             const page = await browser.newPage()
 
             console.log(`Navigating to ${config.pageurl}`)
             await page.goto(config.pageurl)
-            
-            // Delete all cookies for the current page
-            const cookies = await page.cookies();
-            await Promise.all(cookies.map(cookie => page.deleteCookie(cookie)));
-            
+           
             await page.waitForSelector('#Email')
+
+            var n = await page.$eval('#root', el=>{
+                return el.children[0].children.length
+            })
+            
+            if(n==3)
+                break;
 
             const data = await page.$eval('[data-testid="visible_recaptcha"]', el => {
                 var siteKey =  el.getAttribute('data-sitekey');
@@ -96,19 +99,19 @@ async function dowork(){
                     
             console.log(`Submitting...`)
             await page.click('button[type="submit"]')
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(10000);
             const valid = await page.$('#Password')
             console.log(i, valid==null?'no':'yes')
-            page.close()
-            timeout(100)
+            // page.close()
+            idx=i;
         }
         catch(err){
             console.log(err)
             break;
         }
     }
-    timeout(999999999999);
-
+    if(idx<emails.length)
+    setTimeout(dowork, 10000);
 }
 
 
