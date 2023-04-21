@@ -3,65 +3,93 @@ const request = require('request-promise-native')
 const poll = require('promise-poller').default
 
 const config = {
-    sitekey : '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-',
-    pageurl: 'https://www.google.com/recaptcha/api2/demo',
-    apiKey: require('./api-key'),
+    pageurl: 'https://login.coinbase.com/signin?login_challenge=da2d17864e934759a3842839d9ee59a0',
+    apiKey: 'd34b6cea5d999aea03766d376434a179', //require('./api-key'),
     apiSubmitUrl: 'http://2captcha.com/in.php',
     apiRetrieveUrl: 'http://2captcha.com/res.php',
 }
 
-const getUsername = function(){
-    return 'testUser291823928'
-}
-
-const getPassword = function(){
-    return 'p@ssw0rd21340987'
-}
+const emails =[
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+    'anpch@example.com',
+]
 
 const chromeOptions = {
     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     headless: false,
-    slowMo:10,
-    defaultViewport: null
 }
 
-async function main(){
+
+async function dowork(){
     const browser = await puppeteer.launch(chromeOptions)
-    const page = await browser.newPage()
+    
+    for(var i=0;;i++){
+        try{
 
-    console.log(`Navigating to ${config.pageurl}`)
-    await page.goto(config.pageurl)
+            const page = await browser.newPage()
+            
+            console.log(`Navigating to ${config.pageurl}`)
+            await page.goto(config.pageurl)
+            
+            await page.waitForSelector('#Email')
 
-    const requestId = await initiateCaptchaRequest(config.apiKey)
+            const sitekey = await page.$eval('[data-testid="visible_recaptcha"]', element => {
+                return element.getAttribute('data-sitekey');
+            });
+            
+            // const requestId = await initiateCaptchaRequest(config.apiKey, sitekey)
+            
+            await page.type('#Email', emails[0]);
+            
+            // const response = await pollForReqeustResults(config.apiKey, requestId)
+            
+            // console.log(`Entering recaptcha response ${response}`)
+            // await page.evaluate(()=>{
+            //         var o = document.querySelector("[name='g-recaptcha-response']")
+            //         o&&(o.innerHTML=response)
+            // })
+                
+            console.log(`Submitting...`)
+            await page.click('button[type="submit"]')
+            await page.waitForTimeout(1000);
 
-    // const username = getUsername()
-    // console.log(`Typing username ${username}`)
-    // await page.type('#user_reg', username);
+            console.log(i)
+            timeout(100)
+        }
+        catch(err){
+            console.log(err)
+            break;
+        }
+    }
+    timeout(999999999999);
 
-    // const password = getPassword()
-    // console.log(`Typing password ${password}`)
-    // await page.type('#password', password);
-
-    const response = await pollForReqeustResults(config.apiKey, requestId)
-
-    // console.log(`Entering recaptcha response ${response}`)
-    await page.evaluate(`document.getElementById("g-recaptcha-response").innerHTML="${response}"`)
-
-    // console.log(`Submitting...`)
-    // page.click('button[type="submit"]')
 }
 
 
-async function initiateCaptchaRequest(apiKey){
-    const formData = {
-        method: 'userrecaptcha',
-        googlekey: config.sitekey,
-        key: apiKey,
-        pageurl: config.pageurl,
-        json: 1
-    }
+async function initiateCaptchaRequest(apiKey, sitekey){
+ 
     console.log(`Submitting solution request to 2captcha for ${config.pageurl}`)
-    const response = await request.post(config.apiSubmitUrl, {form: formData})
+    const response = await request.post('http://2captcha.com/in.php?key=' + apiKey + '&method=userrecaptcha&googlekey=' + sitekey + '&pageurl='+config.pageurl+'&json=1')
+
     return  JSON.parse(response).request;
 }
 
@@ -77,12 +105,13 @@ async function pollForReqeustResults(key, id, retries = 30, interval = 1500, del
 }
 
 function requestCaptchaResults(apiKey, requestId){
-    const url = `${config.apiRetrieveUrl}?key=${apiKey}&request=${requestId}&json=1`
+    const url = `${config.apiRetrieveUrl}?key=${apiKey}&action=get&id=${requestId}&json=1`
     return async function(){
         return new Promise(async function(resolve, reject){
             console.log(`Polling for response...`)
             const rawResponse = await request.get(url)
             const resp = JSON.parse(rawResponse)
+            console.log(resp)
             if(resp.status === 0)return reject(resp.request)
             console.log('Response received')
             resolve(resp.request)
@@ -93,5 +122,4 @@ function requestCaptchaResults(apiKey, requestId){
 
 const timeout = ms => new Promise(res=>setTimeout(res, ms))
 
-
-main()
+dowork()
