@@ -36,6 +36,7 @@ const emails =[
 const chromeOptions = {
     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     headless: false,
+    args: ['--incognito']
 }
 
 
@@ -46,7 +47,7 @@ async function dowork(){
         try{
 
             const page = await browser.newPage()
-            
+
             console.log(`Navigating to ${config.pageurl}`)
             await page.goto(config.pageurl)
             
