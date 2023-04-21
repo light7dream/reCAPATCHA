@@ -36,7 +36,6 @@ const emails =[
 const chromeOptions = {
     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     headless: false,
-    args: ['--incognito']
 }
 
 
@@ -71,9 +70,9 @@ async function dowork(){
                 
             console.log(`Submitting...`)
             await page.click('button[type="submit"]')
-            await page.waitForTimeout(1000);
-
-            console.log(i)
+            await page.waitForTimeout(100);
+            const valid = await page.$eval('#Password', el=>{return el!=null?'registed':'not registed'})
+            console.log(i, valid)
             timeout(100)
         }
         catch(err){
