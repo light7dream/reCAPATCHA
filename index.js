@@ -68,7 +68,7 @@ async function dowork(){
 
             const data = await page.$eval('[data-testid="visible_recaptcha"]', el => {
                 var siteKey =  el.getAttribute('data-sitekey');
-                var enabled = el.childElementCount;
+                var enabled = el.children.length;
                 return {
                     siteKey: siteKey,
                     enabled: enabled
