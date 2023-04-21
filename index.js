@@ -71,7 +71,10 @@ async function dowork(){
             })
             
             if(n==3)
-                break;
+            {
+                console.log(n)
+                break;   
+            }
 
             const data = await page.$eval('[data-testid="visible_recaptcha"]', el => {
                 var siteKey =  el.getAttribute('data-sitekey');
@@ -111,7 +114,7 @@ async function dowork(){
         }
     }
     // if(idx<emails.length)
-    setTimeout(dowork, 10000);
+    setTimeout(dowork, 60000);
 }
 
 
