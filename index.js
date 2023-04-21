@@ -66,15 +66,6 @@ async function dowork(){
            
             await page.waitForSelector('#Email')
 
-            var n = await page.$eval('#root', el=>{
-                return el.children[0].children.length
-            })
-            console.log(n)
-            
-            if(n==3)
-            {
-                break;   
-            }
 
             const data = await page.$eval('[data-testid="visible_recaptcha"]', el => {
                 var siteKey =  el.getAttribute('data-sitekey');
@@ -86,6 +77,7 @@ async function dowork(){
             });
             
             await page.type('#Email', emails[i%10]);
+
 
             if(data.enabled)
             {
@@ -102,7 +94,18 @@ async function dowork(){
                     
             console.log(`Submitting...`)
             await page.click('button[type="submit"]')
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(1000);
+            
+            var n = await page.$eval('#root', el=>{
+                return el.children[0].children.length
+            })
+            console.log(n)
+            
+            if(n==3)
+            {
+                break;   
+            }
+
             const valid = await page.$('#Password')
             console.log(i, valid==null?'no':'yes')
             page.close()
