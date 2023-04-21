@@ -34,7 +34,6 @@ const emails =[
 ]
 
 const chromeOptions = {
-    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     headless: false,
 }
 
@@ -73,6 +72,7 @@ async function dowork(){
             await page.waitForTimeout(100);
             const valid = await page.$eval('#Password', el=>{return el!=null?'registed':'not registed'})
             console.log(i, valid)
+            page.close()
             timeout(100)
         }
         catch(err){
