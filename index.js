@@ -102,7 +102,7 @@ async function dowork(){
             await page.waitForTimeout(10000);
             const valid = await page.$('#Password')
             console.log(i, valid==null?'no':'yes')
-            // page.close()
+            page.close()
             idx=i;
         }
         catch(err){
